@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MFC - Melotto Fantasy Championship</title>
+    <title>MFC - Portal Oficial</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #060608;
-            --bg-gradient: radial-gradient(circle at center, #141419 0%, #060608 100%);
-            --card-bg: rgba(19, 19, 26, 0.75);
-            --card-border: #1c1c24;
+            --bg-dark: #07070a;
+            --arena-smoke: radial-gradient(circle at 50% 30%, #1a1a26 0%, #07070a 70%);
+            --card-bg: rgba(15, 15, 22, 0.85);
+            --card-border: rgba(201, 162, 39, 0.15);
             --gold: #C9A227;
+            --gold-glow: 0 0 20px rgba(201, 162, 39, 0.3);
             --red: #E53935;
             --green: #43A047;
             --white: #ffffff;
-            --gray-text: #8e8e93;
+            --gray-text: #9a9aa2;
         }
 
         body {
             background: var(--bg-dark);
-            background-image: var(--bg-gradient);
+            background-image: var(--arena-smoke);
             color: var(--white);
             font-family: 'Barlow Condensed', sans-serif;
             margin: 0;
@@ -28,26 +29,28 @@
             box-sizing: border-box;
         }
 
+        /* CABEÇALHO DA LIGA */
         header {
             text-align: center;
-            padding: 40px 20px 20px 20px;
+            padding: 30px 20px 10px 20px;
         }
 
         header h1 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 4.5rem;
+            font-size: 3.5rem;
             margin: 0;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             color: var(--white);
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
-        header p {
-            font-size: 1.2rem;
+        header .sub {
+            font-size: 1.1rem;
             color: var(--gold);
-            margin: 5px 0 0 0;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            letter-spacing: 2px;
             font-weight: 700;
+            margin-top: 5px;
         }
 
         .container {
@@ -58,133 +61,191 @@
             box-sizing: border-box;
         }
 
-        /* LIVE BAR (STATUS DO CARD DA SEMANA) */
-        .live-status-bar {
-            background: linear-gradient(90deg, #16161f 0%, #0c0c10 100%);
-            border: 1px solid var(--card-border);
-            border-left: 4px solid var(--gold);
-            border-radius: 4px;
-            padding: 20px;
-            margin-bottom: 30px;
+        /* CARROSSEL CINEMATOGRÁFICO (O CORAÇÃO DO SITE) */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            margin-bottom: 40px;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
+            align-items: flex-end;
+            background-size: cover;
+            background-position: center;
         }
 
-        .live-info h2 {
+        .carousel-slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        /* Efeito de fumaça e sombra por cima da imagem de fundo do carrossel */
+        .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, #07070a 10%, rgba(7,7,10,0.4) 60%, rgba(0,0,0,0) 100%),
+                        linear-gradient(to right, #07070a 20%, rgba(7,7,10,0) 70%);
+            z-index: 1;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 3;
+            padding: 40px;
+            max-width: 600px;
+        }
+
+        .slide-tag {
+            background: var(--red);
+            color: white;
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .live-info p {
-            margin: 5px 0 0 0;
-            color: var(--gray-text);
             font-size: 1.1rem;
+            padding: 4px 12px;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+            border-radius: 2px;
         }
 
-        .btn-action {
-            background: var(--gold);
-            color: #000;
-            text-decoration: none;
+        .slide-tag.gold { background: var(--gold); color: #000; }
+
+        .slide-title {
             font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            line-height: 0.95;
+            margin: 0 0 15px 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .slide-desc {
             font-size: 1.3rem;
-            padding: 10px 25px;
-            border-radius: 4px;
+            color: var(--gray-text);
+            margin: 0 0 20px 0;
+            line-height: 1.3;
+        }
+
+        /* BOTÕES DO CARROSSEL */
+        .carousel-nav {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
             font-weight: bold;
-            transition: transform 0.2s;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
 
-        .btn-action:hover {
-            transform: scale(1.05);
+        .nav-btn:hover {
+            background: var(--gold);
+            color: black;
+            border-color: var(--gold);
         }
 
-        /* GRID DO DASHBOARD */
-        .dashboard-grid {
+        /* GRID DO DASHBOARD INFORMATIVO ABAIXO */
+        .grid-arena {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 25px;
         }
 
-        .dash-card {
+        .widget-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 6px;
+            border-radius: 4px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
         }
 
-        .card-title-bar {
+        .widget-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--card-border);
-            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 12px;
             margin-bottom: 15px;
         }
 
-        .card-title-bar h3 {
+        .widget-header h3 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.8rem;
             margin: 0;
             letter-spacing: 1px;
         }
 
-        .card-link {
+        .widget-link {
             color: var(--gold);
             text-decoration: none;
-            font-size: 1rem;
-            font-weight: bold;
+            font-size: 0.95rem;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
-        /* MINI TABELAS E DADOS INTERNOS */
-        .data-list {
+        .data-table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        .data-list tr {
-            border-bottom: 1px solid rgba(28, 28, 36, 0.5);
-        }
-
-        .data-list tr:last-child {
-            border: none;
-        }
-
-        .data-list td {
+        .data-table td {
             padding: 10px 0;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
         }
 
-        .text-right { text-align: right; }
+        .data-table tr:last-child td { border: none; }
         .text-gold { color: var(--gold); }
         .text-gray { color: var(--gray-text); }
-        
-        .badge-team {
-            background: #1c1c24;
+        .text-right { text-align: right; }
+
+        .badge {
+            background: rgba(255,255,255,0.05);
             padding: 2px 6px;
-            border-radius: 4px;
+            border-radius: 3px;
             font-size: 0.9rem;
             margin-left: 5px;
-        }
-
-        .survivor-count {
-            font-size: 3rem;
-            font-family: 'Bebas Neue', sans-serif;
-            color: var(--white);
-            margin: 10px 0 0 0;
-            line-height: 1;
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
         /* RESPONSIVIDADE */
         @media (max-width: 768px) {
-            header h1 { font-size: 3rem; }
-            .live-status-bar { text-align: center; justify-content: center; }
+            .carousel-container { height: 380px; }
+            .slide-title { font-size: 2.3rem; }
+            .slide-content { padding: 20px; }
+            .carousel-nav { bottom: 15px; right: 20px; }
         }
     </style>
 </head>
@@ -192,138 +253,123 @@
 
     <header>
         <h1>MELOTTO FANTASY CHAMPIONSHIP</h1>
-        <p>Painel Geral de Controle</p>
+        <div class="sub">The Combat Arena</div>
     </header>
 
     <div class="container">
         
-        <!-- CONTROL CENTRAL: EVENTO DA SEMANA -->
-        <div class="live-status-bar">
-            <div class="live-info">
-                <h2>UFC MACAU: COBERTURA AO VIVO</h2>
-                <p>Próxima atualização de parciais às 03:30 da madrugada de sábado.</p>
+        <div class="carousel-container">
+            
+            <div class="carousel-slide active" style="background-image: linear-gradient(rgba(0,0,0,0.2), #07070a), url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1200&auto=format&fit=crop');">
+                <div class="slide-overlay"></div>
+                <div class="slide-content">
+                    <span class="slide-tag gold">Destaque da Semana</span>
+                    <h2 class="slide-title">Victor "Vasco" Araújo destrói no card principal</h2>
+                    <p class="slide-desc">O atleta da Giggity cravou o método e o round exatos da luta do cinturão e disparou na liderança dos Meio-Médios.</p>
+                </div>
             </div>
-            <a href="#" class="btn-action">Acompanhar Lutas Ao Vivo</a>
+
+            <div class="carousel-slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), #07070a), url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1200&auto=format&fit=crop');">
+                <div class="slide-overlay"></div>
+                <div class="slide-content">
+                    <span class="slide-tag">Contagem Regressiva</span>
+                    <h2 class="slide-title">UFC Macau: A madrugada dos azarões</h2>
+                    <p class="slide-desc">As parciais ao vivo abrem às 03:30 da manhã. Quem segurar as zebras do card preliminar assume o topo da liga.</p>
+                </div>
+            </div>
+
+            <div class="carousel-slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), #07070a), url('https://images.unsplash.com/photo-1555661530-68c8e98db4e6?q=80&w=1200&auto=format&fit=crop');">
+                <div class="slide-overlay"></div>
+                <div class="slide-content">
+                    <span class="slide-tag gold">Guerra de Clãs</span>
+                    <h2 class="slide-title">Panela Fight assume liderança isolada</h2>
+                    <p class="slide-desc">Com três vitórias seguidas em confrontos diretos, a academia PF ultrapassa a Don't Try Us no Semestral.</p>
+                </div>
+            </div>
+
+            <div class="carousel-nav">
+                <button class="nav-btn" onclick="mudarSlide(-1)">◀</button>
+                <button class="nav-btn" onclick="mudarSlide(1)">▶</button>
+            </div>
         </div>
 
-        <!-- DASHBOARD COM INFORMAÇÕES DIRETAS -->
-        <div class="dashboard-grid">
+        <div class="grid-arena">
             
-            <!-- WIDGET: CINTURÕES DIVISIONAIS -->
-            <div class="dash-card">
-                <div class="card-title-bar">
+            <div class="widget-card">
+                <div class="widget-header">
                     <h3>Detentores de Cinturão</h3>
-                    <a href="#" class="card-link">Ver Rankings →</a>
+                    <a href="#" class="widget-link">Rankings →</a>
                 </div>
-                <table class="data-list">
+                <table class="data-table">
                     <tr>
                         <td class="text-gray">PESADO</td>
-                        <td>Alam "Daredevil" <span class="badge-team">DTU</span></td>
-                        <td class="text-right text-gold">CADASTRADO</td>
+                        <td>Alam "Daredevil" <span class="badge">DTU</span></td>
+                        <td class="text-right text-gold">CAMPEÃO</td>
                     </tr>
                     <tr>
                         <td class="text-gray">MÉDIO</td>
-                        <td>Floriano <span class="badge-team">TRTT</span></td>
-                        <td class="text-right text-gold">CADASTRADO</td>
+                        <td>Matheus Garbim <span class="badge">ZS</span></td>
+                        <td class="text-right text-gold">CAMPEÃO</td>
                     </tr>
                     <tr>
                         <td class="text-gray">LEVE</td>
-                        <td>Belinelli <span class="badge-team">CTM</span></td>
-                        <td class="text-right text-gold">CADASTRADO</td>
+                        <td>Arthur Scardine <span class="badge">TRTT</span></td>
+                        <td class="text-right text-gold">CAMPEÃO</td>
                     </tr>
                 </table>
             </div>
 
-            <!-- WIDGET: PREMIER LEAGUE -->
-            <div class="dash-card">
-                <div class="card-title-bar">
-                    <h3>Líderes da Premier League</h3>
-                    <a href="#" class="card-link">Tabela Completa →</a>
-                </div>
-                <table class="data-list">
-                    <tr>
-                        <td style="width: 40px;">#1</td>
-                        <td>Tadeu Marquezini <span class="badge-team">PF</span></td>
-                        <td class="text-right">745 pts</td>
-                    </tr>
-                    <tr>
-                        <td>#2</td>
-                        <td>Mamede Lima <span class="badge-team">TKO</span></td>
-                        <td class="text-right">712 pts</td>
-                    </tr>
-                    <tr>
-                        <td>#3</td>
-                        <td>Bruno "Lobo" Bohm <span class="badge-team">BRA</span></td>
-                        <td class="text-right">698 pts</td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- WIDGET: SURVIVOR STATUS -->
-            <div class="dash-card">
-                <div class="card-title-bar">
-                    <h3>Guerra do Survivor</h3>
-                    <a href="#" class="card-link">Lista de Vidas →</a>
-                </div>
-                <p class="text-gray" style="margin: 0; text-transform: uppercase; letter-spacing: 1px;">Guerreiros Restantes</p>
-                <div class="survivor-count">84 <span style="font-size: 1.5rem; color: var(--gray-text);">/ 130 ATLETAS</span></div>
-                <p style="margin: 10px 0 0 0; color: var(--red); font-weight: bold;">⚠️ 12 eliminados no último evento</p>
-            </div>
-
-            <!-- WIDGET: CONFRONTOS DIRETOS DO CARD -->
-            <div class="dash-card">
-                <div class="card-title-bar">
+            <div class="widget-card">
+                <div class="widget-header">
                     <h3>Destaques H2H (Macau)</h3>
-                    <a href="#" class="card-link">Seu Confronto →</a>
+                    <a href="#" class="widget-link">Todos os Combates →</a>
                 </div>
-                <table class="data-list">
+                <table class="data-table">
                     <tr>
                         <td>Igor Melotto</td>
-                        <td class="text-gold" style="text-align: center;">VS</td>
+                        <td class="text-gold" style="text-align: center; font-size: 1rem;">VS</td>
                         <td class="text-right">Vasco Araújo</td>
                     </tr>
                     <tr>
                         <td>Leonam Oliveira</td>
-                        <td class="text-gold" style="text-align: center;">VS</td>
+                        <td class="text-gold" style="text-align: center; font-size: 1rem;">VS</td>
                         <td class="text-right">Danilão</td>
                     </tr>
                 </table>
             </div>
 
-            <!-- WIDGET: TEAMS LEAGUE -->
-            <div class="dash-card">
-                <div class="card-title-bar">
-                    <h3>Teams League (Academias)</h3>
-                    <a href="#" class="card-link">Guerra de Clãs →</a>
+            <div class="widget-card">
+                <div class="widget-header">
+                    <h3>Status do Survivor</h3>
+                    <a href="#" class="widget-link">Lista de Vidas →</a>
                 </div>
-                <table class="data-list">
-                    <tr>
-                        <td style="width: 40px;">#1</td>
-                        <td>🔥 Panela Fight <span class="text-gray">(PF)</span></td>
-                        <td class="text-right">2,410 pts</td>
-                    </tr>
-                    <tr>
-                        <td>#2</td>
-                        <td>🛡️ Don't Try Us <span class="text-gray">(DTU)</span></td>
-                        <td class="text-right">2,350 pts</td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- WIDGET: GRAND PRIX (MATA-MATA) -->
-            <div class="dash-card">
-                <div class="card-title-bar">
-                    <h3>Grand Prix Eliminatório</h3>
-                    <a href="#" class="card-link">Chaveamento →</a>
+                <div style="font-family: 'Bebas Neue'; font-size: 3.5rem; line-height: 1; margin: 10px 0;">
+                    84 <span style="font-size: 1.5rem; color: var(--gray-text);">/ 130 VIVOS</span>
                 </div>
-                <p class="text-gray" style="margin: 0; text-transform: uppercase;">Fase Atual</p>
-                <p style="font-size: 1.5rem; font-weight: bold; margin: 5px 0 0 0; color: var(--gold);">QUARTAS DE FINAL</p>
-                <p class="text-gray" style="margin: 5px 0 0 0;">Próximos cruzamentos agendados para o card da semana que vem.</p>
+                <p style="margin: 0; color: var(--red); font-weight: bold; font-size: 1.1rem;">⚠️ Próximo gongo elimina quem errar a luta principal</p>
             </div>
 
         </div>
-
     </div>
 
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+
+        function mostrarSlide(index) {
+            slides[slideIndex].classList.remove('active');
+            slideIndex = (index + slides.length) % slides.length;
+            slides[slideIndex].classList.add('active');
+        }
+
+        function mudarSlide(n) {
+            mostrarSlide(slideIndex + n);
+        }
+
+        // Auto-play: Muda de notícia sozinho a cada 5 segundos
+        setInterval(() => {
+            mudarSlide(1);
+        }, 5000);
+    </script>
 </body>
 </html>
