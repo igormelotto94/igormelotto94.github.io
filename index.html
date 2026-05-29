@@ -3,279 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MMA Melotto - MFC Portal</title>
+    <title>MFC - Melotto Fantasy Championship</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0c0c0f;
-            --card-bg: #13131a;
+            --bg-dark: #060608;
+            --bg-gradient: radial-gradient(circle at center, #141419 0%, #060608 100%);
+            --card-bg: rgba(20, 20, 25, 0.7);
+            --card-border: #1c1c24;
             --gold: #C9A227;
-            --red: #E53935;
-            --green: #43A047;
-            --gray-text: #8e8e93;
+            --gold-glow: rgba(201, 162, 39, 0.2);
+            --white: #ffffff;
+            --gray-text: #a0a0a5;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: #ffffff;
+            background: var(--bg-dark);
+            background-image: var(--bg-gradient);
+            color: var(--white);
             font-family: 'Barlow Condensed', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            box-sizing: border-box;
+            min-height: 100vh;
         }
 
+        /* CABEÇALHO PREMIUM */
         header {
-            width: 100%;
-            max-width: 1200px;
-            padding: 40px 20px;
             text-align: center;
-            border-bottom: 1px solid #1c1c24;
+            padding: 50px 20px 30px 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(6,6,8,0) 100%);
+        }
+
+        .logo-sub {
+            font-size: 1.1rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 700;
         }
 
         header h1 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 4rem;
-            color: var(--gold);
-            margin: 0;
-            letter-spacing: 3px;
-            line-height: 1;
+            font-size: 5.5rem;
+            margin: 5px 0;
+            letter-spacing: 4px;
+            line-height: 0.9;
+            color: var(--white);
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
 
-        header p {
-            font-size: 1.4rem;
+        .logo-slogan {
+            font-size: 1.2rem;
             color: var(--gray-text);
-            margin: 5px 0 0 0;
-            text-transform: uppercase;
             letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
         }
 
+        /* CONTAINER PRINCIPAL */
         .container {
             width: 100%;
             max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
             box-sizing: border-box;
         }
 
-        /* CARD DOS CAMPEÕES */
-        .section-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.2rem;
-            color: #ffffff;
-            margin: 40px 0 20px 0;
-            letter-spacing: 1px;
-            border-left: 4px solid var(--gold);
-            padding-left: 15px;
-        }
-
-        .champions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        /* BANNER DE DESTAQUE DINÂMICO */
+        .highlight-banner {
+            background: linear-gradient(135deg, #16161f 0%, #0c0c10 100%);
+            border: 1px solid var(--card-border);
+            border-left: 5px solid var(--gold);
+            border-radius: 6px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 20px;
         }
 
-        .champ-card {
-            background-color: var(--card-bg);
-            border: 1px solid #1c1c24;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            transition: transform 0.3s;
-        }
-
-        .champ-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-        }
-
-        .champ-avatar {
-            width: 100px;
-            height: 100px;
-            background-color: #222;
-            border-radius: 50%;
-            margin: 0 auto 15px auto;
-            border: 2px solid var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--gold);
-        }
-
-        .champ-name {
+        .banner-content h2 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.6rem;
+            font-size: 2.5rem;
             margin: 0;
             letter-spacing: 1px;
+            color: var(--white);
         }
 
-        .champ-division {
-            font-size: 1rem;
-            color: var(--gold);
-            text-transform: uppercase;
-            margin: 5px 0;
-        }
-
-        .champ-team {
-            font-size: 1.1rem;
-            color: var(--gray-text);
-        }
-
-        /* TABELA DE RANKING */
-        .ranking-box {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            border: 1px solid #1c1c24;
-            overflow-x: auto;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-        }
-
-        .ranking-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        .ranking-table th {
-            background-color: #181822;
-            padding: 15px;
-            font-family: 'Bebas Neue', sans-serif;
+        .banner-content p {
             font-size: 1.3rem;
-            color: var(--gold);
-            letter-spacing: 1px;
+            color: var(--gray-text);
+            margin: 5px 0 0 0;
         }
 
-        .ranking-table td {
-            padding: 15px;
-            border-bottom: 1px solid #1c1c24;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .ranking-table tr:hover {
-            background-color: #181822;
-        }
-
-        .dot {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 4px;
-        }
-        .dot-w { background-color: var(--green); }
-        .dot-l { background-color: var(--red); }
-        .dot-d { background-color: var(--gold); }
-
-        .team-badge {
-            background-color: #1c1c24;
-            padding: 4px 8px;
+        .banner-badge {
+            background: var(--gold);
+            color: var(--bg-dark);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            padding: 8px 20px;
             border-radius: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* SEÇÃO DO HUB DE COMPETIÇÕES */
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        /* CARDS DA ARENA */
+        .hub-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 25px;
+            position: relative;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            box-shadow: 0 12px 30px var(--gold-glow);
+            background: rgba(25, 25, 35, 0.9);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .card-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+
+        .card-desc {
+            font-size: 1.15rem;
+            color: var(--gray-text);
+            line-height: 1.4;
+            margin: 0 0 20px 0;
+        }
+
+        .card-footer {
+            font-weight: 700;
             font-size: 1rem;
-            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* RESPONSIVIDADE MONSTRO (MOBILE-FIRST) */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 3.5rem;
+            }
+            .logo-sub {
+                font-size: 0.9rem;
+                letter-spacing: 2px;
+            }
+            .logo-slogan {
+                font-size: 1rem;
+            }
+            .highlight-banner {
+                text-align: center;
+                justify-content: center;
+                padding: 20px;
+            }
+            .banner-content h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- PORTAL SIGNATURE -->
     <header>
-        <h1>MELOTTO FANTASY CHAMPIONSHIP</h1>
-        <p>O império dos puristas da luta</p>
+        <p class="logo-sub">Melotto Fantasy Championship</p>
+        <h1>M F C</h1>
+        <p class="logo-slogan">Sinta-se um verdadeiro lutador — sem levar soco na cara</p>
     </header>
 
     <div class="container">
         
-        <!-- EXIBIÇÃO DE CAMPEÕES LINEARES -->
-        <div class="section-title">Detentores de Cinturão</div>
-        <div class="champions-grid">
-            <div class="champ-card">
-                <div class="champ-avatar">FOTO</div>
-                <div class="champ-name">Alam "Daredevil"</div>
-                <div class="champ-division">Peso-Pesado</div>
-                <div class="champ-team">🐍 [DTU]</div>
+        <!-- TERMÔMETRO/STATUS DA SEMANA DE LUTA -->
+        <div class="highlight-banner">
+            <div class="banner-content">
+                <h2>PRÓXIMO CARD: UFC MACAU</h2>
+                <p>Status: Palpites encerrados. Acompanhe a cobertura ao vivo na madrugada.</p>
             </div>
-            <div class="champ-card">
-                <div class="champ-avatar">FOTO</div>
-                <div class="champ-name">Floriano</div>
-                <div class="champ-division">Meio-Médio</div>
-                <div class="champ-team">⛈️ [TRTT]</div>
-            </div>
-            <div class="champ-card">
-                <div class="champ-avatar">FOTO</div>
-                <div class="champ-name">Belinelli</div>
-                <div class="champ-division">Peso-Leve</div>
-                <div class="champ-team">🐵 [CTM]</div>
-            </div>
-            <div class="champ-card">
-                <div class="champ-avatar">FOTO</div>
-                <div class="champ-name">Danilo "O Cômico"</div>
-                <div class="champ-division">Peso-Mosca</div>
-                <div class="champ-team">🧸 [FDP]</div>
-            </div>
+            <div class="banner-badge">CARD ATIVO</div>
         </div>
 
-        <!-- MOCK DE RANKING INDIVIDUAL -->
-        <div class="section-title">Ranking da Categoria (Exemplo Meio-Médio)</div>
-        <div class="ranking-box">
-            <table class="ranking-table">
-                <thead>
-                    <tr>
-                        <th style="width: 80px;">POS</th>
-                        <th>ATLETA</th>
-                        <th>ACADEMIA</th>
-                        <th>ESTILO</th>
-                        <th>CARTEL</th>
-                        <th>SEQUÊNCIA (ÚLTIMAS 5)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="color: var(--gold);">#1</td>
-                        <td>Tadeu "Tupim" Marquezini</td>
-                        <td><span class="team-badge">🫕 PF</span></td>
-                        <td>Muay Thai</td>
-                        <td>54-45</td>
-                        <td>
-                            <span class="dot dot-w"></span>
-                            <span class="dot dot-w"></span>
-                            <span class="dot dot-w"></span>
-                            <span class="dot dot-w"></span>
-                            <span class="dot dot-l"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="color: #fff;">#2</td>
-                        <td>Mamede Lima</td>
-                        <td><span class="team-badge">👊 TKO</span></td>
-                        <td>Boxe</td>
-                        <td>16-9</td>
-                        <td>
-                            <span class="dot dot-w"></span>
-                            <span class="dot dot-l"></span>
-                            <span class="dot dot-w"></span>
-                            <span class="dot dot-w"></span>
-                            <span class="dot dot-w"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="color: #fff;">#3</td>
-                        <td>Bruno "Lobo" Bohm</td>
-                        <td><span class="team-badge">🇧🇷 BRA</span></td>
-                        <td>Boxe</td>
-                        <td>32-25</td>
-                        <td>
-                            <span class="dot dot-l"></span>
-                            <span class="dot dot-w"></span>
-                            <span class="dot dot-l"></span>
-                            <span class="dot dot-l"></span>
-                            <span class="dot dot-w"></span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <h2 class="section-title">O Ecossistema de Competições</h2>
+        
+        <!-- O HUB COMPLETO BASEADO NA SUA APRESENTAÇÃO -->
+        <div class="hub-grid">
+            
+            <!-- BELTS -->
+            <a href="#" class="hub-card">
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">Belts & Rankings</h3>
+                        <div class="card-icon">🏆</div>
+                    </div>
+                    <p class="card-desc">Escolha uma divisão, escale o ranking vencendo duelos, conquiste o título e defenda seu cinturão linear ou interino.</p>
+                </div>
+                <div class="card-footer">Entrar na Arena →</div>
+            </a>
+
+            <!-- PREMIER LEAGUE -->
+            <a href="#" class="hub-card">
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">Premier League</h3>
+                        <div class="card-icon">🎖️</div>
+                    </div>
+                    <p class="card-desc">Mostre regularidade ao longo de seis meses, entregue boas atuações noite após noite e crave seu nome na história.</p>
+                </div>
+                <div class="card-footer">Ver Classificação →</div>
+            </a>
+
+            <!-- SURVIVOR -->
+            <a href="#" class="hub-card">
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">Survivor</h3>
+                        <div class="card-icon">⏳</div>
+                    </div>
+                    <p class="card-desc">Sobreviva noite após noite em uma competição semestral brutal onde apenas o mais consistente resiste. Resta um.</p>
+                </div>
+                <div class="card-footer">Lista de Sobreviventes →</div>
+            </a>
+
+            <!-- GRAND PRIX -->
+            <a href="#" class="hub-card">
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">Grand Prix</h3>
+                        <div class="card-icon">⚡</div>
+                    </div>
+                    <p class="card-desc">Enfrente adversários de qualquer divisão no formato mata-mata direto e busque seu lugar no topo do pódio olímpico.</p>
+                </div>
+                <div class="card-footer">Ver Chaves do GP →</div>
+            </a>
+
+            <!-- TEAMS LEAGUE -->
+            <a href="#" class="hub-card">
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">Teams League</h3>
+                        <div class="card-icon">🛡️</div>
+                    </div>
+                    <p class="card-desc">Junte-se a uma equipe e ajude seu time a superar os rivais durante o semestre para se tornar a melhor academia do MFC.</p>
+                </div>
+                <div class="card-footer">Classificação de Equipes →</div>
+            </a>
+
+            <!-- TUF MELOTTO -->
+            <a href="#" class="hub-card">
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">TUF Melotto</h3>
+                        <div class="card-icon">🔥</div>
+                    </div>
+                    <p class="card-desc">Represente sua equipe em um torneio eliminatório exclusivo com clima de reality show. Guerra total entre academias.</p>
+                </div>
+                <div class="card-footer">Acompanhar Reality →</div>
+            </a>
+
+            <!-- WORLD CUP -->
+            <a href="#" class="hub-card">
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">World Cup</h3>
+                        <div class="card-icon">🌍</div>
+                    </div>
+                    <p class="card-desc">Esteja entre os melhores do ano e dispute a grande Copa do Mundo do MFC no encerramento da temporada.</p>
+                </div>
+                <div class="card-footer">Painel da Copa →</div>
+            </a>
+
+            <!-- GOAT -->
+            <a href="#" class="hub-card">
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">Hall GOAT</h3>
+                        <div class="card-icon">👑</div>
+                    </div>
+                    <p class="card-desc">Construa seu legado definitivo conquistando o maior número possível de títulos e torne-se o maior de todos os tempos.</p>
+                </div>
+                <div class="card-footer">Ver Lendas →</div>
+            </a>
+
         </div>
 
     </div>
