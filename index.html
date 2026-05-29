@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMA Melotto - MFC Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0c0c0f;
+            --card-bg: #13131a;
+            --gold: #C9A227;
+            --red: #E53935;
+            --green: #43A047;
+            --gray-text: #8e8e93;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            font-family: 'Barlow Condensed', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #1c1c24;
+        }
+
+        header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--gold);
+            margin: 0;
+            letter-spacing: 3px;
+            line-height: 1;
+        }
+
+        header p {
+            font-size: 1.4rem;
+            color: var(--gray-text);
+            margin: 5px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* CARD DOS CAMPEÕES */
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin: 40px 0 20px 0;
+            letter-spacing: 1px;
+            border-left: 4px solid var(--gold);
+            padding-left: 15px;
+        }
+
+        .champions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .champ-card {
+            background-color: var(--card-bg);
+            border: 1px solid #1c1c24;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            transition: transform 0.3s;
+        }
+
+        .champ-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .champ-avatar {
+            width: 100px;
+            height: 100px;
+            background-color: #222;
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .champ-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .champ-division {
+            font-size: 1rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin: 5px 0;
+        }
+
+        .champ-team {
+            font-size: 1.1rem;
+            color: var(--gray-text);
+        }
+
+        /* TABELA DE RANKING */
+        .ranking-box {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid #1c1c24;
+            overflow-x: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .ranking-table th {
+            background-color: #181822;
+            padding: 15px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .ranking-table td {
+            padding: 15px;
+            border-bottom: 1px solid #1c1c24;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .ranking-table tr:hover {
+            background-color: #181822;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .dot-w { background-color: var(--green); }
+        .dot-l { background-color: var(--red); }
+        .dot-d { background-color: var(--gold); }
+
+        .team-badge {
+            background-color: #1c1c24;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>MELOTTO FANTASY CHAMPIONSHIP</h1>
+        <p>O império dos puristas da luta</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- EXIBIÇÃO DE CAMPEÕES LINEARES -->
+        <div class="section-title">Detentores de Cinturão</div>
+        <div class="champions-grid">
+            <div class="champ-card">
+                <div class="champ-avatar">FOTO</div>
+                <div class="champ-name">Alam "Daredevil"</div>
+                <div class="champ-division">Peso-Pesado</div>
+                <div class="champ-team">🐍 [DTU]</div>
+            </div>
+            <div class="champ-card">
+                <div class="champ-avatar">FOTO</div>
+                <div class="champ-name">Floriano</div>
+                <div class="champ-division">Meio-Médio</div>
+                <div class="champ-team">⛈️ [TRTT]</div>
+            </div>
+            <div class="champ-card">
+                <div class="champ-avatar">FOTO</div>
+                <div class="champ-name">Belinelli</div>
+                <div class="champ-division">Peso-Leve</div>
+                <div class="champ-team">🐵 [CTM]</div>
+            </div>
+            <div class="champ-card">
+                <div class="champ-avatar">FOTO</div>
+                <div class="champ-name">Danilo "O Cômico"</div>
+                <div class="champ-division">Peso-Mosca</div>
+                <div class="champ-team">🧸 [FDP]</div>
+            </div>
+        </div>
+
+        <!-- MOCK DE RANKING INDIVIDUAL -->
+        <div class="section-title">Ranking da Categoria (Exemplo Meio-Médio)</div>
+        <div class="ranking-box">
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">POS</th>
+                        <th>ATLETA</th>
+                        <th>ACADEMIA</th>
+                        <th>ESTILO</th>
+                        <th>CARTEL</th>
+                        <th>SEQUÊNCIA (ÚLTIMAS 5)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color: var(--gold);">#1</td>
+                        <td>Tadeu "Tupim" Marquezini</td>
+                        <td><span class="team-badge">🫕 PF</span></td>
+                        <td>Muay Thai</td>
+                        <td>54-45</td>
+                        <td>
+                            <span class="dot dot-w"></span>
+                            <span class="dot dot-w"></span>
+                            <span class="dot dot-w"></span>
+                            <span class="dot dot-w"></span>
+                            <span class="dot dot-l"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: #fff;">#2</td>
+                        <td>Mamede Lima</td>
+                        <td><span class="team-badge">👊 TKO</span></td>
+                        <td>Boxe</td>
+                        <td>16-9</td>
+                        <td>
+                            <span class="dot dot-w"></span>
+                            <span class="dot dot-l"></span>
+                            <span class="dot dot-w"></span>
+                            <span class="dot dot-w"></span>
+                            <span class="dot dot-w"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: #fff;">#3</td>
+                        <td>Bruno "Lobo" Bohm</td>
+                        <td><span class="team-badge">🇧🇷 BRA</span></td>
+                        <td>Boxe</td>
+                        <td>32-25</td>
+                        <td>
+                            <span class="dot dot-l"></span>
+                            <span class="dot dot-w"></span>
+                            <span class="dot dot-l"></span>
+                            <span class="dot dot-l"></span>
+                            <span class="dot dot-w"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+</html>
